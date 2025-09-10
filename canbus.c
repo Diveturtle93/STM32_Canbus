@@ -22,6 +22,7 @@
 // Einfuegen der eigenen Include Dateien
 //----------------------------------------------------------------------
 #include "canbus.h"
+#include "canbus_ringbuffer.h"
 #include "millis.h"
 //----------------------------------------------------------------------
 
@@ -99,7 +100,7 @@ bool CANwrite (CAN_message_t *CAN_tx_msg, bool sendMB)
 		if (sendMB != true)
 		{
 			// Wenn Ring keinen Platz mehr hat
-			if (addToRingBuffer(&txRing, (void *)CAN_tx_msg) == false)
+			if (canbus_addToRingBuffer(&txRing, (void *)CAN_tx_msg) == false)
 			{
 				ret = false;												// Kein Platz mehr im Ringbuffer
 			}
@@ -138,7 +139,7 @@ bool CANread(CAN_message_t *CAN_rx_msg)
 	HAL_CAN_DeactivateNotification(&hcan3, CAN_IT_RX_FIFO0_MSG_PENDING);
 
 	// Lese Nachricht
-	ret = removeFromRingBuffer(&rxRing, CAN_rx_msg);
+	ret = canbus_removeFromRingBuffer(&rxRing, CAN_rx_msg);
 
 	// Schalte Empfangsinterrupt ein
 	HAL_CAN_ActivateNotification(&hcan3, CAN_IT_RX_FIFO0_MSG_PENDING);
@@ -244,7 +245,7 @@ void initializeBuffer (void)
 	}
 
 	// Ringpuffer fuer Senden initialisieren
-	initRingBuffer(&txRing, txBuffer, sizeTxBuffer);
+	canbus_ringbuffer_init(&txRing, txBuffer, sizeTxBuffer);
 
 	// Konfiguriere den Sende Ringbuffer
 	if (rxBuffer == 0)
@@ -254,70 +255,7 @@ void initializeBuffer (void)
 	}
 
 	// Konfiguriere den Empfangs Ringpuffer
-	initRingBuffer(&rxRing, rxBuffer, sizeRxBuffer);
-}
-//----------------------------------------------------------------------
-
-// Initialisiere Ringbuffer
-//----------------------------------------------------------------------
-void initRingBuffer (RingbufferTypeDef *ring, volatile CAN_message_t *buffer, uint32_t size)
-{
-	ring->buffer = buffer;
-	ring->size = size;
-	ring->head = 0;
-	ring->tail = 0;
-}
-//----------------------------------------------------------------------
-
-// Nachricht zum Ring hinzufuegen
-//----------------------------------------------------------------------
-bool addToRingBuffer (RingbufferTypeDef *ring, CAN_message_t *msg)
-{
-	// Variable definieren
-	uint16_t nextEntry;
-	nextEntry = (ring->head + 1) % ring->size;
-
-	// Pruefe, ob Ringbuffer gefuellt ist
-	if (nextEntry == ring->tail)
-		return false;
-
-	// Fuege Element zum Ring hinzu
-	memcpy((void *)&ring->buffer[ring->head], (void *)msg, sizeof(CAN_message_t));
-
-	// Ringbuffer Kopf hochzaehlen
-	ring->head = nextEntry;
-
-	return true;
-}
-//----------------------------------------------------------------------
-
-// Nachricht von Ring entfernen
-//----------------------------------------------------------------------
-bool removeFromRingBuffer (RingbufferTypeDef *ring, CAN_message_t *msg)
-{
-	// Pruefen, ob Nachrichten im Ring sind
-	if (isRingBufferEmpty(ring) == true)
-		return false;
-
-	// Kopiere Nachricht
-	memcpy((void *)msg, (void *)&ring->buffer[ring->tail], sizeof(CAN_message_t));
-
-	// Ringbuffer Schwanz hochzaehlen
-	ring->tail = (ring->tail + 1) % ring->size;
-
-	return true;
-}
-//----------------------------------------------------------------------
-
-// Abfrage, ob Ringbuffer Nachrichten hat
-//----------------------------------------------------------------------
-bool isRingBufferEmpty (RingbufferTypeDef *ring)
-{
-	// Wenn Ringpuffer leer
-	if (ring->head == ring->tail)
-		return true;
-
-	return false;
+	canbus_ringbuffer_init(&rxRing, rxBuffer, sizeRxBuffer);
 }
 //----------------------------------------------------------------------
 
@@ -334,7 +272,7 @@ void HAL_CAN_TxMailbox0CompleteCallback (CAN_HandleTypeDef *CanHandler)
 	// Wenn CAN1 Nachricht gesendet hat
 	if (CanHandler->Instance == CAN3)
 	{
-		if (removeFromRingBuffer(&txRing, &txmsg) == true)
+		if (canbus_removeFromRingBuffer(&txRing, &txmsg) == true)
 		{
 			CANwrite(&txmsg, true);
 		}
@@ -354,7 +292,7 @@ void HAL_CAN_TxMailbox1CompleteCallback (CAN_HandleTypeDef *CanHandler)
 	// Wenn CAN1 Nachricht gesendet hat
 	if (CanHandler->Instance == CAN3)
 	{
-		if (removeFromRingBuffer(&txRing, &txmsg) == true)
+		if (canbus_removeFromRingBuffer(&txRing, &txmsg) == true)
 		{
 			CANwrite(&txmsg, true);
 		}
@@ -374,7 +312,7 @@ void HAL_CAN_TxMailbox2CompleteCallback (CAN_HandleTypeDef *CanHandler)
 	// Wenn CAN1 Nachricht gesendet hat
 	if (CanHandler->Instance == CAN3)
 	{
-		if (removeFromRingBuffer(&txRing, &txmsg) == true)
+		if (canbus_removeFromRingBuffer(&txRing, &txmsg) == true)
 		{
 			CANwrite(&txmsg, true);
 		}
@@ -421,7 +359,7 @@ void HAL_CAN_RxFifo0MsgPendingCallback (CAN_HandleTypeDef *CanHandler)
 		{
 			// Abspeichern der Nachricht in Ringpuffer
 			rxmsg.bus = 1;
-			addToRingBuffer(&rxRing, &rxmsg);
+			canbus_addToRingBuffer(&rxRing, &rxmsg);
 		}
 
 		// TODO CAN2 und CAN3 hinzufuegen

@@ -10,8 +10,8 @@
 
 // Dateiheader definieren
 //----------------------------------------------------------------------
-#ifndef INC_CAN_BUS_H_
-#define INC_CAN_BUS_H_
+#ifndef INC_CANBUS_H_
+#define INC_CANBUS_H_
 //----------------------------------------------------------------------
 
 // Einfuegen der standard Include-Dateien
@@ -81,16 +81,6 @@ typedef struct
 	bool seq;																// Sequentiale Rahmen
 } CAN_message_t;
 //----------------------------------------------------------------------
-// Typedefine fuer Rigbuffer
-//----------------------------------------------------------------------
-typedef struct
-{
-	volatile uint16_t head;													// Kopf des Ringbusses
-	volatile uint16_t tail;													// Schwanz des Ringbusses
-	uint16_t size;															// Groesse des Ringbusses
-	volatile CAN_message_t *buffer;											// Nachrichtenbuffer
-} RingbufferTypeDef;
-//----------------------------------------------------------------------
 // Typedefine fuer CAN-Paket
 //----------------------------------------------------------------------
 typedef struct
@@ -118,12 +108,8 @@ void CAN_config (void);														// CAN-Bus konfigurieren
 void clearCAN (void);														// Daten aus CAN-NAchrichten zuruecksetzen
 bool isInitialized (void);													// Abfrage, ob Ringpuffer initialisiert
 void initializeBuffer (void);												// Empfangs und Sendepuffer initialisieren
-void initRingBuffer (RingbufferTypeDef *ring, volatile CAN_message_t *buffer, uint32_t size);	// Ringpuffer initialisieren
-bool addToRingBuffer (RingbufferTypeDef *ring, CAN_message_t *msg);			// Nachricht zu Ringpuffer hinzufuegen
-bool removeFromRingBuffer (RingbufferTypeDef *ring, CAN_message_t *msg);	// Nachricht von Ringpuffer loeschen
-bool isRingBufferEmpty (RingbufferTypeDef *ring);							// Abfrage, ob Ringpuffer leer ist
 CAN_PaketTypeDef CAN_Nachricht (uint16_t id, uint8_t length, uint16_t sendeintervall, uint32_t sendetime, uint8_t sendpossible);	// CAN-Paket in CAN-Paketliste schreiben
 //----------------------------------------------------------------------
 
-#endif /* INC_CAN_BUS_H_ */
+#endif /* INC_CANBUS_H_ */
 //----------------------------------------------------------------------
