@@ -8,6 +8,11 @@
 // Projekt	:	CAN-Bus
 //----------------------------------------------------------------------
 
+// Saveguard symbol
+//----------------------------------------------------------------------
+#pragma once
+//----------------------------------------------------------------------
+
 // Dateiheader definieren
 //----------------------------------------------------------------------
 #ifndef INC_CANBUS_H_
@@ -105,7 +110,7 @@ uint8_t CAN_available (void);												// Abfrage, ob CAN-Nachricht im Ringpuf
 bool CANread (CAN_message_t *CAN_rx_msg);									// CAN-Nachricht lesen
 void CANwork (void);														// CAN-Bus durchlaufen
 void CAN_config (void);														// CAN-Bus konfigurieren
-void clearCAN (void);														// Daten aus CAN-NAchrichten zuruecksetzen
+void clearCAN (void);														// Daten aus CAN-Nachrichten zuruecksetzen
 bool isInitialized (void);													// Abfrage, ob Ringpuffer initialisiert
 void initializeBuffer (void);												// Empfangs und Sendepuffer initialisieren
 CAN_PaketTypeDef CAN_Nachricht (uint16_t id, uint8_t length, uint16_t sendeintervall, uint32_t sendetime, uint8_t sendpossible);	// CAN-Paket in CAN-Paketliste schreiben

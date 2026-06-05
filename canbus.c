@@ -382,3 +382,11 @@ void CAN3_TX_IRQHandler (void)
 	HAL_CAN_IRQHandler(&hcan3);
 }
 //----------------------------------------------------------------------
+
+// CAN-Bus Konfiguration der Nachrichten
+//----------------------------------------------------------------------
+__weak void CAN_config (void)
+{
+	// Funktion als weak definiert, damit Code compilierbar bleibt
+}
+//----------------------------------------------------------------------
