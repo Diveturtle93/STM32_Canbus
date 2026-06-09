@@ -35,6 +35,14 @@
 
 //----------------------------------------------------------------------
 
+// Version definieren
+//----------------------------------------------------------------------
+#define CANBUS_MAJOR					0
+#define CANBUS_MINOR					0
+#define CANBUS_PATCH					0
+#define CANBUS_DEV						0
+//----------------------------------------------------------------------
+
 // Typedefine fuer Buffer size
 //----------------------------------------------------------------------
 typedef enum																// TypeDef fuer Empfangsbuffer groesse

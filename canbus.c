@@ -131,7 +131,7 @@ uint8_t CAN_available (void)
 
 // Nachricht von Ringbuffer einlesen
 //----------------------------------------------------------------------
-bool CANread(CAN_message_t *CAN_rx_msg)
+bool CANread (CAN_message_t *CAN_rx_msg)
 {
 	bool ret;
 
