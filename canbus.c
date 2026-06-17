@@ -6,6 +6,7 @@
 // Version	:	1.0
 // Autor	:	Diveturtle93
 // Projekt	:	CAN-Bus
+// Quelle	:
 //----------------------------------------------------------------------
 
 // Einfuegen der standard Include-Dateien
@@ -28,8 +29,8 @@
 
 // Variablen definieren
 //----------------------------------------------------------------------
-RingbufferTypeDef rxRing;													// Empfangsring initialisieren
-RingbufferTypeDef txRing;													// Sendering initialisieren
+RingbufferCANBusTypeDef rxRing;												// Empfangsring initialisieren
+RingbufferCANBusTypeDef txRing;												// Sendering initialisieren
 
 uint16_t sizeRxBuffer = 0;													// Groesse Empfangsring
 uint16_t sizeTxBuffer = 0;													// Groesse Sendering
