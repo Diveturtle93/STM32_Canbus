@@ -23,10 +23,13 @@ sind im Code als TODO-Kommentare vorgesehen.
  
 ## Dateien
  
-| Datei       | Beschreibung                                                                    |
-|-------------|---------------------------------------------------------------------------------|
-| `canbus.h`  | Datentypen (`CAN_message_t`, `CAN_PaketTypeDef`, Ringpuffer), API-Definitionen  |
-| `canbus.c`  | Implementierung inkl. Ringpuffer, Interrupt-Handler, Paketverwaltung            |
+| Datei                                            | Beschreibung                                                                  |
+|--------------------------------------------------|-------------------------------------------------------------------------------|
+| `canbus.h`                                       | Datentypen (`CAN_message_t`, `CAN_PaketTypeDef`), API-Definitionen            |
+| `canbus.c`                                       | Implementierung inkl. Interrupt-Handler und Paketverwaltung                   |
+| `canbus_ringbuffer.h`                            | Ringpuffer-Typ `RingbufferCANBusTypeDef` und Funktionen                       |
+| `canbus_ringbuffer.c`                            | Ringpuffer für Sende- und Empfangsnachrichten (FIFO)                          |
+| [`examples/can_config.c`](examples/can_config.c) | Vorlage für `CAN_config()`, wird in das eigene Projekt kopiert und angepasst  |
  
 ## Datentypen
  
@@ -115,7 +118,7 @@ folgenden Größen angelegt:
  
 ### 1. Dateien einbinden
  
-`canbus.h` und `canbus.c` in das STM32-Projekt kopieren und den Header einbinden:
+`canbus.h`, `canbus.c`, `canbus_ringbuffer.h` und `canbus_ringbuffer.c` in das STM32-Projekt kopieren und den Header einbinden:
  
 ```c
 #include "canbus.h"
@@ -168,6 +171,11 @@ void CAN_config(void)
     // weitere Einträge ...
 }
 ```
+ 
+Eine vollständige Vorlage mit Dateikopf und Includes liegt in
+[`examples/can_config.c`](examples/can_config.c). Sie wird in das eigene Projekt
+kopiert und dort angepasst. Wird die Bibliothek als Submodul eingebunden, muss
+`examples/` vom Build ausgeschlossen werden, sonst ist `CAN_config()` doppelt definiert.
  
 Diese Funktion wird einmalig von `CANinit()` aufgerufen, nachdem der Ringpuffer und der
 CAN-Bus initialisiert wurden.

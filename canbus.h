@@ -3,13 +3,12 @@
 //----------------------------------------------------------------------
 // Sprache	:	C
 // Datum	:	28.06.2023
-// Version	:	1.0
 // Autor	:	Diveturtle93
 // Projekt	:	CAN-Bus
 // Quelle	:
 //----------------------------------------------------------------------
 
-// Saveguard symbol
+// Sicherheitssymbol
 //----------------------------------------------------------------------
 #pragma once
 //----------------------------------------------------------------------
@@ -31,17 +30,24 @@
 #include "main.h"
 //----------------------------------------------------------------------
 
-// Einfuegen der eigenen Include Dateien
+// Einfuegen der eigenen Include-Dateien
 //----------------------------------------------------------------------
 
+//----------------------------------------------------------------------
+
+// Definiere Debug-Symbole
+//----------------------------------------------------------------------
+#ifdef DEBUG
+	#define DEBUG_CANBUS
+#endif
 //----------------------------------------------------------------------
 
 // Version definieren
 //----------------------------------------------------------------------
-#define CANBUS_MAJOR					0
-#define CANBUS_MINOR					0
-#define CANBUS_PATCH					0
-#define CANBUS_DEV						0
+#define CANBUS_MAJOR							0
+#define CANBUS_MINOR							0
+#define CANBUS_PATCH							0
+#define CANBUS_DEV								1
 //----------------------------------------------------------------------
 
 // Typedefine fuer Buffer size
@@ -74,6 +80,7 @@ typedef enum																// TypeDef fuer Sendebuffer groesse
 	TX_SIZE_1024 = (uint16_t)1024,
 } TXQUEUE_TABLE;
 //----------------------------------------------------------------------
+
 // Typedefine fuer CAN-Message
 //----------------------------------------------------------------------
 typedef struct
@@ -95,6 +102,7 @@ typedef struct
 	bool seq;																// Sequentiale Rahmen
 } CAN_message_t;
 //----------------------------------------------------------------------
+
 // Typedefine fuer CAN-Paket
 //----------------------------------------------------------------------
 typedef struct

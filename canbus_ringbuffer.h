@@ -3,13 +3,12 @@
 //----------------------------------------------------------------------
 // Sprache	:	C
 // Datum	:	10.09.2025
-// Version	:	1.0
 // Autor	:	Diveturtle93
 // Projekt	:	CAN-Bus
 // Quelle	:	
 //----------------------------------------------------------------------
 
-// Saveguard symbol
+// Sicherheitssymbol
 //----------------------------------------------------------------------
 #pragma once
 //----------------------------------------------------------------------
@@ -30,17 +29,16 @@
 
 //----------------------------------------------------------------------
 
-// Einfuegen der eigenen Include Dateien
+// Einfuegen der eigenen Include-Dateien
 //----------------------------------------------------------------------
 #include "canbus.h"
 //----------------------------------------------------------------------
 
-// Version definieren
+// Definiere Debug-Symbole
 //----------------------------------------------------------------------
-#define CANBUS_RINGBUFFER_MAJOR					0
-#define CANBUS_RINGBUFFER_MINOR					0
-#define CANBUS_RINGBUFFER_PATCH					0
-#define CANBUS_RINGBUFFER_DEV					0
+#ifdef DEBUG
+	#define DEBUG_CANBUS_RINGBUFFER
+#endif
 //----------------------------------------------------------------------
 
 // Typedefine fuer Rigbuffer

@@ -3,7 +3,6 @@
 //----------------------------------------------------------------------
 // Sprache	:	C
 // Datum	:	28.06.2023
-// Version	:	1.0
 // Autor	:	Diveturtle93
 // Projekt	:	CAN-Bus
 // Quelle	:
@@ -20,7 +19,7 @@
 
 //----------------------------------------------------------------------
 
-// Einfuegen der eigenen Include Dateien
+// Einfuegen der eigenen Include-Dateien
 //----------------------------------------------------------------------
 #include "canbus.h"
 #include "canbus_ringbuffer.h"
@@ -149,7 +148,7 @@ bool CANread (CAN_message_t *CAN_rx_msg)
 }
 //----------------------------------------------------------------------
 
-//
+// CAN-Nachrichten senden wenn welche im Ringbuffer sind
 //----------------------------------------------------------------------
 void CANwork (void)
 {
