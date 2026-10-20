@@ -208,7 +208,7 @@ void clearCAN (void)
 CAN_PaketTypeDef CAN_Nachricht (uint16_t id, uint8_t length, uint16_t sendeintervall, uint32_t sendetime, uint8_t sendpossible)
 {
 	// Variable definieren
-	CAN_PaketTypeDef TxHeader;
+	CAN_PaketTypeDef TxHeader = {0};
 
 	// Variable mit Inhalt beschreiben
 	TxHeader.msg.id = id;
